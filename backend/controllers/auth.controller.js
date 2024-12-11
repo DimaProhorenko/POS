@@ -20,7 +20,10 @@ export const signup = async (req, res) => {
     await user.save();
 
     return res.status(201).json({ ...user._doc, password: null });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error.message });
+  }
 };
 
 export const login = async (req, res) => {
