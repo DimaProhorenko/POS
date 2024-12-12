@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 
 import InputWithIcon from "../../components/InputWithIcon";
 import { useLoginMutation } from "./authApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const [login, { isLoading, error }] = useLoginMutation();
 
@@ -20,6 +21,7 @@ const LoginForm = () => {
       console.log("Logged in successfully:", res);
       setEmail("");
       setPassword("");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }

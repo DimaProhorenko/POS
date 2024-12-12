@@ -14,10 +14,14 @@ export const authApiSlice = createApi({
         body: credentials,
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({ url: "/logout", method: "POST" }),
+    }),
     getMe: builder.query({
       query: () => "/me",
     }),
   }),
 });
 
-export const { useLoginMutation, useGetMeQuery } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useGetMeQuery } =
+  authApiSlice;
