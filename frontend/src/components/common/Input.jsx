@@ -1,7 +1,6 @@
 import React from "react";
 
 const Input = ({ label, ...props }) => {
-  console.log(label);
   return (
     <div className="form-control w-full">
       {label && (

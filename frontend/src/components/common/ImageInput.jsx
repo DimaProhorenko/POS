@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { BsFiles } from "react-icons/bs";
 
-const PreviewImage = ({ key, image }) => {
+const PreviewImage = ({ image, onRemove }) => {
+  console.log(image.name);
   return (
-    <div key={key} className="relative group">
+    <div className="relative group">
       <img
         src={image.url}
         alt={image.name}
         className="w-full h-full object-cover rounded shadow"
       />
       <button
-        onClick={() => removeImage(image.name)}
+        onClick={() => onRemove(image.name)}
         className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
       >
         ×
@@ -19,8 +20,13 @@ const PreviewImage = ({ key, image }) => {
   );
 };
 
-const ImageInput = () => {
+const ImageInput = ({ handleChange }) => {
   const [images, setImages] = useState([]);
+
+  const updateImages = (newImages) => {
+    setImages(newImages);
+    handleChange(newImages); // Pass the updated images array to the parent
+  };
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -28,7 +34,7 @@ const ImageInput = () => {
       name: file.name,
       url: URL.createObjectURL(file),
     }));
-    setImages((prev) => [...prev, ...filePreviews]);
+    updateImages([...images, ...filePreviews]);
   };
 
   const handleDrop = (e) => {
@@ -38,13 +44,14 @@ const ImageInput = () => {
       name: file.name,
       url: URL.createObjectURL(file),
     }));
-    setImages((prev) => [...prev, ...filePreviews]);
+    updateImages([...images, ...filePreviews]);
   };
 
   const handleDragOver = (e) => e.preventDefault();
 
   const removeImage = (name) => {
-    setImages((prev) => prev.filter((image) => image.name !== name));
+    const filteredImages = images.filter((image) => image.name !== name);
+    updateImages(filteredImages);
   };
   return (
     <div className="w-full space-y-6">
@@ -70,7 +77,7 @@ const ImageInput = () => {
       </div>
       <div className="grid grid-cols-3 gap-4">
         {images.map((image) => (
-          <PreviewImage key={image.name} image={image} />
+          <PreviewImage key={image.name} image={image} onRemove={removeImage} />
         ))}
       </div>
     </div>
