@@ -7,6 +7,7 @@ import cors from "cors";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.route.js";
 import adminRoutes from "./routes/admin.route.js";
+import productRoutes from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("api/products", productRoutes);
 
 mongoose.connection.once("open", () => {
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../auth/authApiSlice";
+import { useGetMeQuery, useLogoutMutation } from "../auth/authApiSlice";
 import toast from "react-hot-toast";
 
 const ProfileDropdown = () => {
   const [logout, { isLoading }] = useLogoutMutation();
+  const { data: user } = useGetMeQuery();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -24,9 +25,11 @@ const ProfileDropdown = () => {
       </summary>
 
       <ul className="dropdown-content menu bg-base-100 rounded-box w-max z-[1] p-1 shadow">
-        <li>
-          <Link to="/create-user">Create user</Link>
-        </li>
+        {user.role === "admin" && (
+          <li>
+            <Link to="/create-user">Create user</Link>
+          </li>
+        )}
         <li>
           <button onClick={handleLogout}>Logout</button>
         </li>
