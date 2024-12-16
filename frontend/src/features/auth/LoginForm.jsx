@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 
-import InputWithIcon from "../../components/InputWithIcon";
+import InputWithIcon from "../../components//common/InputWithIcon";
 import { useLoginMutation } from "./authApiSlice";
 import { useNavigate } from "react-router-dom";
 

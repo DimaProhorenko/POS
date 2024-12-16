@@ -1,10 +1,11 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Login from "./pages/Login";
 import Main from "./components/layout/Main";
 import CreateUser from "./pages/CreateUser";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import CreateProduct from "./pages/CreateProduct";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <h1>HOME</h1>
+                <Link to="/create-product" className="btn btn-primary">
+                  Create Product
+                </Link>
               </ProtectedRoute>
             }
           />
@@ -26,6 +29,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <CreateUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-product"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CreateProduct />
               </ProtectedRoute>
             }
           />

@@ -13,12 +13,15 @@ export const authApiSlice = createApi({
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ["User"],
     }),
     logout: builder.mutation({
       query: () => ({ url: "/logout", method: "POST" }),
+      invalidatesTags: ["User"],
     }),
     getMe: builder.query({
       query: () => "/me",
+      providesTags: ["User"],
     }),
   }),
 });

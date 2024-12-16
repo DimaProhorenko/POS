@@ -6,7 +6,7 @@ const Main = ({ children }) => {
   return (
     <>
       <Header />
-      <main className="pt-16 min-h-screen">
+      <main className="pt-16 min-h-screen wrapper">
         <Outlet />
       </main>
     </>

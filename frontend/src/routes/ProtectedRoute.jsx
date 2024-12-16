@@ -5,6 +5,7 @@ import FullScreenLoading from "../components/common/FullScreenLoading";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { data, isLoading, isError } = useGetMeQuery();
+  console.log(data);
 
   if (isLoading) {
     return <FullScreenLoading size="lg" />;

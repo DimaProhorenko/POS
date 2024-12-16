@@ -5,7 +5,7 @@ import { FaLock } from "react-icons/fa";
 import { MdPerson } from "react-icons/md";
 import { toast } from "react-hot-toast";
 
-import InputWithIcon from "../../components/InputWithIcon";
+import InputWithIcon from "../../components/common/InputWithIcon";
 import { useCreateUserMutation } from "./userManagementApiSlice";
 
 const CreateUserForm = () => {

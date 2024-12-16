@@ -25,7 +25,7 @@ const ProfileDropdown = () => {
       </summary>
 
       <ul className="dropdown-content menu bg-base-100 rounded-box w-max z-[1] p-1 shadow">
-        {user.role === "admin" && (
+        {user?.role === "admin" && (
           <li>
             <Link to="/create-user">Create user</Link>
           </li>
