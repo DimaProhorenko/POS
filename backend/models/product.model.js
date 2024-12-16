@@ -31,7 +31,6 @@ const productSchema = new mongoose.Schema(
     ],
     code: {
       type: Number,
-      required: true,
     },
     creator: {
       type: mongoose.Schema.Types.ObjectId,

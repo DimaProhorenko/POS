@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
+import { uploadToCloudinary } from "../utils/helpers.js";
 
 export const createProduct = async (req, res) => {
   console.log("FUck");
@@ -38,17 +39,13 @@ export const createProduct = async (req, res) => {
     }
 
     if (images && images.length > 0) {
-      const uploadResults = await Promise.all(
-        images.map((image) =>
-          cloudinary.uploader
-            .upload(image.file, { resource_type: "auto" })
-            .then((res) => res.secure_url)
-        )
+      const res = await Promise.all(
+        images.map((image) => uploadToCloudinary(image, "product-images")) // Call your function
       );
-      imageUrls = uploadResults
-        .filter((result) => result.status === "fulfilled")
-        .map((result) => result.value);
+      imageUrls = res.map((item) => item.url);
     }
+
+    console.log(imageUrls);
 
     const product = new Product({
       title,

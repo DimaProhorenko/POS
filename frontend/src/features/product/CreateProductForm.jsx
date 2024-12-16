@@ -31,14 +31,14 @@ const CreateProductForm = () => {
   const handleImageChange = (images) => {
     setFormValues((prev) => ({
       ...prev,
-      images, // Update the images array in the parent state
+      images: images,
     }));
   };
 
   // Form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formValues);
+    // console.log(formValues);
     try {
       await createProduct(formValues).unwrap();
       toast.success("Product created");

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsFiles } from "react-icons/bs";
 
 const PreviewImage = ({ image, onRemove }) => {
@@ -21,52 +21,60 @@ const PreviewImage = ({ image, onRemove }) => {
 
 const ImageInput = ({ handleChange }) => {
   const [images, setImages] = useState([]);
+  const [imagesPreviews, setImagesPreviews] = useState([]);
 
-  const updateImages = (newImages) => {
-    setImages(newImages);
-    handleChange(newImages); // Pass the updated images array to the parent
-  };
-
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const filePreviews = files.map((file) => ({
-      name: file.name,
-      url: URL.createObjectURL(file),
-      file: file,
-    }));
-    updateImages([...images, ...filePreviews]);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const files = Array.from(e.dataTransfer.files);
-    const filePreviews = files.map((file) => ({
-      name: file.name,
-      url: URL.createObjectURL(file),
-      file: file,
-    }));
-    updateImages([...images, ...filePreviews]);
-  };
-
-  const handleDragOver = (e) => e.preventDefault();
+  useEffect(() => {
+    handleChange(images); // Only runs after images state has been updated
+  }, [images]);
 
   const removeImage = (name) => {
     const filteredImages = images.filter((image) => image.name !== name);
     updateImages(filteredImages);
   };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImgChange = async (e) => {
+    const files = Array.from(e.target.files);
+
+    if (files.length > 0) {
+      // Convert files to base64
+      const base64Images = await Promise.all(
+        files.map((file) => convertToBase64(file))
+      );
+
+      // Create previews
+      const previews = files.map((file) => ({
+        name: file.name,
+        url: URL.createObjectURL(file),
+      }));
+
+      // Update both previews and base64 images state
+      setImagesPreviews((prevState) => [...prevState, ...previews]);
+      setImages((prevState) => [...prevState, ...base64Images]);
+    }
+  };
+
   return (
     <div className="w-full space-y-6">
       <div
         className="aspect-video border border-dotted relative"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
+        // onDrop={handleDrop}
+        // onDragOver={handleDragOver}
       >
         <input
           type="file"
           accept="image/*"
           multiple
           className="opacity-0 w-full h-full block cursor-pointer"
-          onChange={handleFileChange}
+          onChange={handleImgChange}
         />
         <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center pointer-events-none">
           <BsFiles className="size-8" />
@@ -77,7 +85,7 @@ const ImageInput = ({ handleChange }) => {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {images.map((image) => (
+        {imagesPreviews.map((image) => (
           <PreviewImage key={image.name} image={image} onRemove={removeImage} />
         ))}
       </div>
