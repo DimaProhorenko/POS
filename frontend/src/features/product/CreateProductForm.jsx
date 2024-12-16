@@ -3,16 +3,20 @@ import Input from "../../components/common/Input";
 import Select from "../../components/common/Select";
 import ImageInput from "../../components/common/ImageInput";
 import Card from "../../components/common/Card";
+import LoadingButton from "../../components/common/LoadingButton";
+import { useCreateProductMutation } from "./productApiSlice";
+import toast from "react-hot-toast";
 
 const CreateProductForm = () => {
   const [formValues, setFormValues] = useState({
-    productName: "",
+    title: "",
     category: "",
     brand: "",
     price: "",
     quantity: 1,
     images: [],
   });
+  const [createProduct, { isLoading }] = useCreateProductMutation();
 
   // Handler to update form values
   const handleInputChange = (e) => {
@@ -32,10 +36,23 @@ const CreateProductForm = () => {
   };
 
   // Form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formValues);
-    // Add your submit logic here (e.g., API call)
+    try {
+      await createProduct(formValues).unwrap();
+      toast.success("Product created");
+      // setFormValues({
+      //   title: "",
+      //   category: "",
+      //   brand: "",
+      //   price: "",
+      //   quantity: 1,
+      //   images: [],
+      // });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
@@ -44,8 +61,8 @@ const CreateProductForm = () => {
           <Input
             label="Product Name"
             placeholder="Enter product name"
-            name="productName"
-            value={formValues.productName}
+            name="title"
+            value={formValues.title}
             onChange={handleInputChange}
           />
           <Select
@@ -70,8 +87,6 @@ const CreateProductForm = () => {
           />
           <Input
             type="number"
-            step="0.1"
-            min="0.01"
             label="product price"
             name="price"
             placeholder="Enter product price"
@@ -93,9 +108,9 @@ const CreateProductForm = () => {
         </div>
       </div>
       <div>
-        <button type="submit" className="btn btn-wide btn-primary">
+        <LoadingButton isLoading={isLoading} className="btn-wide">
           Create
-        </button>
+        </LoadingButton>
       </div>
     </form>
   );

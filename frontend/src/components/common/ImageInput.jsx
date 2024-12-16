@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BsFiles } from "react-icons/bs";
 
 const PreviewImage = ({ image, onRemove }) => {
-  console.log(image.name);
   return (
     <div className="relative group">
       <img
@@ -33,6 +32,7 @@ const ImageInput = ({ handleChange }) => {
     const filePreviews = files.map((file) => ({
       name: file.name,
       url: URL.createObjectURL(file),
+      file: file,
     }));
     updateImages([...images, ...filePreviews]);
   };
@@ -43,6 +43,7 @@ const ImageInput = ({ handleChange }) => {
     const filePreviews = files.map((file) => ({
       name: file.name,
       url: URL.createObjectURL(file),
+      file: file,
     }));
     updateImages([...images, ...filePreviews]);
   };

@@ -4,6 +4,6 @@ import { createProduct } from "../controllers/product.controller.js";
 
 const router = new express.Router();
 
-router.post("/products", protect, authorize(["admin"]), createProduct);
+router.post("/", protect, authorize("admin"), createProduct);
 
 export default router;
