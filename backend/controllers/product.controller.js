@@ -4,7 +4,6 @@ import User from "../models/user.model.js";
 import { uploadToCloudinary } from "../utils/helpers.js";
 
 export const createProduct = async (req, res) => {
-  console.log("FUck");
   try {
     const { title, description, images, category, price, quantity } = req.body;
     const userId = req.user._id;
@@ -45,8 +44,6 @@ export const createProduct = async (req, res) => {
       imageUrls = res.map((item) => item.url);
     }
 
-    console.log(imageUrls);
-
     const product = new Product({
       title,
       description,
@@ -60,7 +57,22 @@ export const createProduct = async (req, res) => {
     await product.save();
     return res.status(201).json(product);
   } catch (error) {
-    console.log("lksdjflkjdsf", error);
+    console.log(error);
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getProductById = async (req, res) => {
+  try {
+    const { id: prodId } = req.params;
+    const prod = await Product.findById(prodId).populate("creator");
+    if (!prod) {
+      return res.status(404).json({ msg: "Product not found" });
+    }
+
+    return res.status(200).json(prod);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ msg: error.message });
   }
 };

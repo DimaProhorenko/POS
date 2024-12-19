@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Input from "../../components/common/Input";
 import Select from "../../components/common/Select";
 import ImageInput from "../../components/common/ImageInput";
 import Card from "../../components/common/Card";
 import LoadingButton from "../../components/common/LoadingButton";
 import { useCreateProductMutation } from "./productApiSlice";
-import toast from "react-hot-toast";
 
 const CreateProductForm = () => {
   const [formValues, setFormValues] = useState({
@@ -17,6 +18,7 @@ const CreateProductForm = () => {
     images: [],
   });
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const navigate = useNavigate();
 
   // Handler to update form values
   const handleInputChange = (e) => {
@@ -40,16 +42,17 @@ const CreateProductForm = () => {
     e.preventDefault();
     // console.log(formValues);
     try {
-      await createProduct(formValues).unwrap();
+      const res = await createProduct(formValues).unwrap();
       toast.success("Product created");
-      // setFormValues({
-      //   title: "",
-      //   category: "",
-      //   brand: "",
-      //   price: "",
-      //   quantity: 1,
-      //   images: [],
-      // });
+      setFormValues({
+        title: "",
+        category: "",
+        brand: "",
+        price: "",
+        quantity: 1,
+        images: [],
+      });
+      navigate(`/products/${res._id}`);
     } catch (error) {
       console.log(error);
     }

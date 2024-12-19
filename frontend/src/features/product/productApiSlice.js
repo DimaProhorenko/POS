@@ -13,8 +13,14 @@ export const productApiSlice = createApi({
         method: "Post",
         body,
       }),
+      invalidatesTags: ["Products"],
+    }),
+    getProductById: builder.query({
+      query: (id) => `/${id}`,
+      providesTags: ["Products"],
     }),
   }),
 });
 
-export const { useCreateProductMutation } = productApiSlice;
+export const { useCreateProductMutation, useGetProductByIdQuery } =
+  productApiSlice;

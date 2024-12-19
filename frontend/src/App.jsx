@@ -6,6 +6,7 @@ import Main from "./components/layout/Main";
 import CreateUser from "./pages/CreateUser";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CreateProduct from "./pages/CreateProduct";
+import ViewProduct from "./pages/ViewProduct";
 
 function App() {
   return (
@@ -15,31 +16,35 @@ function App() {
 
         <Route path="/" element={<Main />}>
           <Route
-            path="/dashboard"
+            path="dashboard"
             element={
               <ProtectedRoute>
-                <Link to="/create-product" className="btn btn-primary">
+                <Link to="/products/create" className="btn btn-primary">
                   Create Product
                 </Link>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/create-user"
+            path="create-user"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <CreateUser />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/create-product"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <CreateProduct />
-              </ProtectedRoute>
-            }
-          />
+
+          <Route path="products">
+            <Route
+              path="create"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <CreateProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route path=":id" element={<ViewProduct />} />
+          </Route>
         </Route>
       </Routes>
       <Toaster />
