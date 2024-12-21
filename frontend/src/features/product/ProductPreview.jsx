@@ -1,5 +1,10 @@
 import React from "react";
 import { useGetMeQuery } from "../auth/authApiSlice";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 const ProductPreview = ({ product }) => {
   const { images, code, title, category, brand, price, creator } = product;
@@ -8,7 +13,19 @@ const ProductPreview = ({ product }) => {
   return (
     <div className="flex flex-col gap-4 sm:flex-row">
       <div className="sm:w-2/5">
-        <img src={`${images[0]}`} alt="" />
+        <Swiper
+          spaceBetween={20}
+          grabCursor
+          navigation
+          modules={[Navigation]}
+          loop
+        >
+          {images.map((image, idx) => (
+            <SwiperSlide key={image}>
+              <img src={image} alt={`Image ${title} ${idx}`} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
       <div className="overflow-x-auto sm:w-3/5">
         <table className="table table-zebra">

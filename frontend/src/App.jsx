@@ -7,6 +7,7 @@ import CreateUser from "./pages/CreateUser";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import CreateProduct from "./pages/CreateProduct";
 import ViewProduct from "./pages/ViewProduct";
+import Products from "./pages/product/Products";
 
 function App() {
   return (
@@ -19,9 +20,14 @@ function App() {
             path="dashboard"
             element={
               <ProtectedRoute>
-                <Link to="/products/create" className="btn btn-primary">
-                  Create Product
-                </Link>
+                <div className="flex flex-col gap-4">
+                  <Link to="/products/create" className="btn btn-primary">
+                    Create Product
+                  </Link>
+                  <Link to="/products?page=1" className="btn btn-primary">
+                    View Products
+                  </Link>
+                </div>
               </ProtectedRoute>
             }
           />
@@ -35,6 +41,14 @@ function App() {
           />
 
           <Route path="products">
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="create"
               element={

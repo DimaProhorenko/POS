@@ -19,8 +19,15 @@ export const productApiSlice = createApi({
       query: (id) => `/${id}`,
       providesTags: ["Products"],
     }),
+    getAllProducts: builder.query({
+      query: (page) => `?page=${page}`,
+      providesTags: ["Products"],
+    }),
   }),
 });
 
-export const { useCreateProductMutation, useGetProductByIdQuery } =
-  productApiSlice;
+export const {
+  useCreateProductMutation,
+  useGetProductByIdQuery,
+  useGetAllProductsQuery,
+} = productApiSlice;

@@ -5,7 +5,8 @@ import { uploadToCloudinary } from "../utils/helpers.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { title, description, images, category, price, quantity } = req.body;
+    const { title, description, images, category, brand, price, quantity } =
+      req.body;
     const userId = req.user._id;
 
     const user = await User.findById(userId).select("-password");
@@ -17,7 +18,7 @@ export const createProduct = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    if (!title || !category || !priceNumber) {
+    if (!title || !category || !priceNumber || !brand) {
       return res
         .status(400)
         .json({ msg: "Title, category, price fields are required" });
@@ -49,6 +50,7 @@ export const createProduct = async (req, res) => {
       description,
       images: imageUrls,
       category,
+      brand,
       price: priceNumber,
       quantity: quantityNumber,
       creator: user._id,
@@ -71,6 +73,29 @@ export const getProductById = async (req, res) => {
     }
 
     return res.status(200).json(prod);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error.message });
+  }
+};
+
+export const getProducts = async (req, res) => {
+  try {
+    const { page = 1 } = req.query;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const products = await Product.find().skip(skip).limit(limit);
+
+    const total = await Product.countDocuments();
+    return res.status(200).json({
+      data: products,
+      meta: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: error.message });
