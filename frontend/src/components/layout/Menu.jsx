@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { RxDashboard } from "react-icons/rx";
 import MenuDropdown from "./MenuDropdown";

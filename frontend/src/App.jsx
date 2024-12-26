@@ -8,6 +8,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import CreateProduct from "./pages/CreateProduct";
 import ViewProduct from "./pages/ViewProduct";
 import Products from "./pages/product/Products";
+import EditProduct from "./pages/product/EditProduct";
 
 function App() {
   return (
@@ -54,6 +55,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["admin"]}>
                   <CreateProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="edit/:id"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <EditProduct />
                 </ProtectedRoute>
               }
             />

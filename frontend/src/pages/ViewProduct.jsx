@@ -9,8 +9,6 @@ const ViewProduct = () => {
   const { id } = useParams();
   const { data: product, isFetching } = useGetProductByIdQuery(id);
 
-  console.log(product);
-
   return (
     <div>
       <Title>Product Details</Title>

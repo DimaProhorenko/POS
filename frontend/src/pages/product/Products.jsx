@@ -8,6 +8,7 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const { data } = useGetAllProductsQuery(page);
+  console.log(data);
   return (
     <div>
       <Title>Products List</Title>

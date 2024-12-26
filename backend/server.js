@@ -9,6 +9,7 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.route.js";
 import adminRoutes from "./routes/admin.route.js";
 import productRoutes from "./routes/product.route.js";
+import userModel from "./models/user.model.js";
 
 dotenv.config();
 cloudinary.config({
